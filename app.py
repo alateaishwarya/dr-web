@@ -14,7 +14,7 @@ def index():
 @app.route("/predict", methods=['GET','POST'])
 def predict():
     name = request.form['image']
-    time.sleep(0.25)
+    time.sleep(2)
     with open('./files/dr.txt', 'r') as f:
         dr =  f.read().split('\n')
 
