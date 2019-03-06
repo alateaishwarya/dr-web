@@ -4,7 +4,15 @@ import random
 
 from flask import Flask, request, render_template, jsonify
 
+# from PIL import Image
+# from keras.models import load_model
+# from keras import backend as K
+
+# model = load_model('models/model.h5')
+
 app = Flask(__name__)
+
+classes = ['Has DR', 'NO DR']
 
 @app.route("/")
 def index():
@@ -13,7 +21,23 @@ def index():
 
 @app.route("/predict", methods=['GET','POST'])
 def predict():
-    name = request.form['image']
+    f = request.files['image']
+    # name = request.form['image']
+    name = f.filename
+    f.save(os.path.join('images', f.filename))
+
+
+    # img = Image.open('images/' + name)
+    # img = img.resize()
+    # img = np.array(img)
+
+    # preds = model.predict([img])[0]
+    # max_idx = n.argmax(preds)
+
+    # label = classes[max_idx]
+    # score = preds[max_idx]
+
+
     time.sleep(2)
     with open('./files/dr.txt', 'r') as f:
         dr =  f.read().split('\n')
@@ -34,3 +58,6 @@ def predict():
     score = random.randrange(50, 88)
     
     return jsonify({'label': label, 'prob': score})
+
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', debug=False)
