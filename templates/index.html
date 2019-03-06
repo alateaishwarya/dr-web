@@ -41,7 +41,7 @@
       
       <div class="col-12" style="margin-top: 20px;">
         <div class="text-center">
-          <button class="btn btn-submit" type='submit' value="SUBMIT" id="submit">
+          <button class="btn btn-submit" type='submit' value="SUBMIT" id="submit" onclick="post()">
             SUBMIT
           </button>
         </div>
@@ -75,19 +75,38 @@
       }
     }
 
-    $("#submit").click(function() {
-      image = document.getElementById("image").files[0].name;
-      console.log(image);
+    // $("#submit").click(function() {
+    //   image = document.getElementById("image").files[0].name;
+    //   console.log(image);
+    //   $.ajax({
+    //     type: 'POST',
+    //     data: {'image': image},
+    //     url: '/predict',
+    //     success: function(rslt) {
+    //       console.log(rslt);
+    //       set_result(rslt);
+    //     }
+    //   });
+    // });
+
+    function post() {
+      image = document.getElementById("image").files[0];
+
+      var formData = new FormData()
+      formData.append('image', image)
+
       $.ajax({
         type: 'POST',
-        data: {'image': image},
+        data: formData,
         url: '/predict',
+        processData: false,
+        contentType: false,
         success: function(rslt) {
           console.log(rslt);
           set_result(rslt);
         }
       });
-    });
+    }
 
     function set_result(rslt) {
       $('#rslt').show();
